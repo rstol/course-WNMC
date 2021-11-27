@@ -1,5 +1,5 @@
 # Step 2
-1. What is the bandwitdh of the optical spectrum?
+1. What is the bandwidth of the optical spectrum?
 
     The frequency range of visible light lies at around 430 - 750 THz. [1] This constitutes a band 320 THz in size, which by Prof. Mangold's bandwidth estimation guidelines corresponds to 320 Tb/s.
 
