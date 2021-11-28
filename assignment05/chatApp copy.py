@@ -38,7 +38,7 @@ def tell_when_to_stop(should_stop):
 
 queue_ = Queue()
 should_stop = Event()
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
+arduino = serial.Serial(port='/dev/ttyACM1', baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
 time.sleep(2) #give the device some time to startup (2 seconds) 
 
 recv_addr = "FF" # default broadcast address
