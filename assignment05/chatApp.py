@@ -1,6 +1,7 @@
 import serial
 from queue import Queue
 from threading import Thread, Event
+import time
 
 #read from the device’s serial port
 def receive_data(should_stop):
