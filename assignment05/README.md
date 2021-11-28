@@ -10,4 +10,5 @@ The serial com port (COMXX) may need to be modified.
 3. The receiver port can be provider or the default "FF" will be used
 
 ## Notes
-I couldn't run the script as I don't have the arduino connected. I hope the script works.
+- I couldn't run the script as I don't have the arduino connected. I hope the script works.
+- The app should terminate on "Ctrl+C"
