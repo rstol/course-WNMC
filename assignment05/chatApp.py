@@ -13,7 +13,7 @@ def receive_data(should_stop):
         print(f'Output: {message}') #print message
         message = '' #reset message
       else:
-        message = message + byte #concatenate the message 
+        message = message + str(byte) #concatenate the message 
     except serial.SerialException: 
       continue #on timeout try to read again
 
