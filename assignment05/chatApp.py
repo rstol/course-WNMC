@@ -58,7 +58,7 @@ time.sleep(0.1) #wait for settings to be applied
 thread_stop_decider = Thread(target=tell_when_to_stop, args=(should_stop,))
 thread_read = Thread(target=read_data, args=(queue_, should_stop))
 thread_send = Thread(target=send_data, args=(queue_, recv_addr, should_stop))
-thread_receive = Thread(target=receive_data, args=(should_stop))
+thread_receive = Thread(target=receive_data, args=(should_stop,))
 
 thread_read.start()
 thread_send.start()
