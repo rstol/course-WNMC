@@ -35,7 +35,8 @@ def transmission_control(arduino, recv_addr, payload_size, timestamps):
     except serial.SerialException: 
       continue #on timeout try to read again
 
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
+ttyACMindex = '/dev/ttyACM' + input("Enter serial port index of device (0, 1): ")
+arduino = serial.Serial(port=ttyACMindex, baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
 time.sleep(2) #give the device some time to startup (2 seconds)
 arduino.write(f'a[AA]\n'.encode()) #set the device address
 time.sleep(0.1) #wait for settings to be applied
