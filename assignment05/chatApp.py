@@ -9,11 +9,11 @@ def receive_data(should_stop):
   while not should_stop.is_set():
     try: 
       byte = arduino.read(1) #read one byte (blocks until data available or timeout reached) 
-      if byte=='\n': #if termination character reached
+      if byte==b'\n': #if termination character reached
         print(f'Output: {message}') #print message
         message = '' #reset message
       else:
-        message = message + str(byte) #concatenate the message 
+        message = message + byte.decode() #concatenate the message 
     except serial.SerialException: 
       continue #on timeout try to read again
 
@@ -64,7 +64,7 @@ thread_receive = Thread(target=receive_data, args=(should_stop,))
 thread_read.start()
 thread_send.start()
 thread_receive.start()
-thread_stop_decider.start()
+# thread_stop_decider.start()
 
 try:
   while thread_read.is_alive():
