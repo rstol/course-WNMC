@@ -1,5 +1,6 @@
 import serial
 import time
+import numpy as np
 
 def send_data(arduino, msg, recv_addr):
   arduino.write(f'm[{msg}\0,{recv_addr}]\n'.encode()) #send message to device with given address
@@ -10,6 +11,20 @@ def padded(msg, size): #payload size -1 to accomodate for the \0-termination.
   else:
     padlen = size - 1
     return msg[(-1) * padlen:].rjust(padlen, '0')
+
+def vizulisation(timestamps):
+  data_pts = len(timestamps)
+  np_timestamps = np.asarray(timestamps)
+  throughput = np.zeros(data_pts-1) #data packets per second
+  delay = np.zeros(data_pts-1)
+
+  delay = np_timestamps[1:] - np_timestamps[:-1] 
+  throughput = 1.0/delay
+
+  print("Delay: ", delay)
+  print("Throughput: ", throughput)
+  print("Standard deviation delay: ", np.std(delay))
+  print("Standard deviation throughput: ", np.std(throughput))
 
 def transmission_control(arduino, recv_addr, payload_size, timestamps):
   trans_message = 0
@@ -52,7 +67,6 @@ recv_addr = input('Enter desired receive address: ')
 try:
   transmission_control(arduino, recv_addr, payload_size, timestamps)
 except KeyboardInterrupt:
-  prev = timestamps.pop(0)
-  for e in timestamps:
-    print(str(e - prev))
-    prev = e
+  vizulisation(timestamps)
+
+#TODO: run measurements for different packet sizes automatically and plot packet size vs throughput & delay
