@@ -10,7 +10,7 @@
 
 4. At the same sampling rate, what would be the precision with electromagnetic waves? 
 
-	
+
 5. What changes if the sampling rate is doubled to 20 kHz instead (for both, acoustic and electromagnetic waves)?
 
 
@@ -24,15 +24,22 @@
 ## Step 2
 1. Is MobileComp1 or MobileComp2 more suited to carry the data?
 
+MobileComp1
 ![](./figures/step2/MobileComp1_time_domain.png)
 ![](./figures/step2/MobileComp1_freq_domain.png)
 ![](./figures/step2/MobileComp1_spectrogram.png)
+
+MobileComp2
 ![](./figures/step2/MobileComp2_time_domain.png)
 ![](./figures/step2/MobileComp2_freq_domain.png)
 ![](./figures/step2/MobileComp2_spectrogram.png)
 
 2. Which frequencies should be used to encode the data?
+	
+	The higher frequencies from 4kHz till 20kHz as we humans can't perceive these frequencies and they are not that high in magnitude compared to 2kHz and below when looking at the spectrogram. 
 3. Is there a perceivable change of the audio file? Does the sound quality remain?
+
+	In MobComp2 a small change can be perceived and the sound quality is a bit worse (some high distorted sounds are present). The MobComp1 did sound the same as without the embedded message and the quality remains similar. 
 
 ## Step 3
 1. For both sound files: Are there bit errors?
