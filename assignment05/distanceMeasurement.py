@@ -82,3 +82,8 @@ for p_size in payload_sizes:
   transmission_control(arduino, recv_addr, p_size, timestamps, num_measuments)
   throughput, delays = compute_throughput_delay(timestamps, num_measuments, p_size)
   log(throughput, delays, p_size)
+
+# fig, ax = plt.subplots()
+# for col in range(y.shape[1]):
+#   ax.plot(timestamps[1:], delay_ppayload)
+#   ax.fill_between(x, (y[:,col]-ci), (y[:,col]+ci), alpha=.1)
