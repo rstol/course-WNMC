@@ -45,7 +45,7 @@ def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measu
   send_data(arduino, trans_message, recv_addr)
   timestamps.append(time.time())
 
-  while True:
+  while trans_message < repetitions:
     try: 
       byte = arduino.read(1) #read one byte (blocks until data available or timeout reached) 
       if byte==b'\n': #if termination character reached
@@ -64,7 +64,8 @@ def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measu
     except serial.SerialException: 
       continue #on timeout try to read again
 
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
+
+arduino = serial.Serial(port='/dev/COM4', baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
 time.sleep(2) #give the device some time to startup (2 seconds)
 arduino.write(f'a[AA]\n'.encode()) #set the device address
 time.sleep(1) #wait for settings to be applied
