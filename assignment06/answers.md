@@ -7,12 +7,15 @@
 	343 m/s
 3. When sampling at 10 kHz, what is the resolution that a time-of-flight distance measurement could achieve in theory (estimate, leave out implementation details)?
 
+	The resolution would be 3.43cm.   
 
 4. At the same sampling rate, what would be the precision with electromagnetic waves? 
 
+	Assuming that electromagnetic waves travel at the speed of light (in vacuum), the resolution is: 30km. It is much less precise for this sampling rate than acoustic waves.
 
 5. What changes if the sampling rate is doubled to 20 kHz instead (for both, acoustic and electromagnetic waves)?
 
+	The resolution get's better by a factor of two for both.
 
 6. What is the typical bandwidth (measured in Hertz) of an acoustic sound that is used in media such as broadcast, television, cinemas, or recorded with a cellphone?
 
@@ -26,12 +29,14 @@
 	
 MobileComp2 is more suited to carry the data, as it has almost no time periods where the sound is quiet. This can be seen by looking at the amplitude in the time domain graph, where MobileComp1 has parts where the amplitude is very small (quiet) but MobileComp2 has a high amplitude most of the time (loud). 
 
-MobileComp1
+__Graphs for MobileComp1__
+
 ![](./figures/step2/MobileComp1_time_domain.png)
 ![](./figures/step2/MobileComp1_freq_domain.png)
 ![](./figures/step2/MobileComp1_spectrogram.png)
 
-MobileComp2
+__Graphs for MobileComp2__
+
 ![](./figures/step2/MobileComp2_time_domain.png)
 ![](./figures/step2/MobileComp2_freq_domain.png)
 ![](./figures/step2/MobileComp2_spectrogram.png)
