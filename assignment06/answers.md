@@ -23,6 +23,8 @@
 
 ## Step 2
 1. Is MobileComp1 or MobileComp2 more suited to carry the data?
+	
+MobileComp2 is more suited to carry the data, as it has almost no time periods where the sound is quiet. This can be seen by looking at the amplitude in the time domain graph, where MobileComp1 has parts where the amplitude is very small (quiet) but MobileComp2 has a high amplitude most of the time (loud). 
 
 MobileComp1
 ![](./figures/step2/MobileComp1_time_domain.png)
@@ -39,7 +41,7 @@ MobileComp2
 	The higher frequencies from 4kHz till 20kHz as we humans can't perceive these frequencies and they are not that high in magnitude compared to 2kHz and below when looking at the spectrogram. 
 3. Is there a perceivable change of the audio file? Does the sound quality remain?
 
-	In MobComp2 a small change can be perceived and the sound quality is a bit worse (some high distorted sounds are present). The MobComp1 did sound the same as without the embedded message and the quality remains similar. 
+	In MobComp2 amost no change can be perceived and the sound quality is similar. The MobComp1 did sound a bit worse (some distorted echoes/sounds are present) as without the embedded message and the quality is a bit worse. 
 
 ## Step 3
 1. For both sound files: Are there bit errors?
