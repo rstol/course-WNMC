@@ -2,15 +2,25 @@ import serial
 from queue import Queue
 from threading import Thread, Event
 import time
+import re
 
 #read from the device’s serial port
 def receive_data(should_stop):
   message = ''
+  r = re.compile("m\[R,D,.*\]") #regex matching valid "message containing data received"
   while not should_stop.is_set():
     try: 
       byte = arduino.read(1) #read one byte (blocks until data available or timeout reached) 
       if byte==b'\n': #if termination character reached
-        print(f'Output: {message}') #print message
+        if r.match(message) is not None: #if the message contains data received from another device:
+          message = message.split(',')[2].split(']')[0] #extract raw message data
+          byte = arduino.read(1)
+          srcAddr = ""
+          while byte != b'\n':
+            srcAddr = srcAddr + byte.decode() #read following statistic event to get message src
+            byte = arduino.read(1)
+          srcAddr = srcAddr.split('-')[0].split(',')[2] #extract src address from statistic event
+          print(f'    [{srcAddr}] {message}') #print message
         message = '' #reset message
       else:
         message = message + byte.decode() #concatenate the message 
@@ -21,7 +31,7 @@ def read_data(queue_, should_stop):
   print('Start chatting using VLC: ')
   while not should_stop.is_set():
       # read data to send from console
-      message = input('\nInput: ')
+      message = input('')
       if message:
         queue_.put(message)
 
