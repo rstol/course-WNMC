@@ -44,4 +44,8 @@ MobileComp2
 	In MobComp2 amost no change can be perceived and the sound quality is similar. The MobComp1 did sound a bit worse (some distorted echoes/sounds are present) as without the embedded message and the quality is a bit worse. 
 
 ## Step 3
-1. For both sound files: Are there bit errors?
+1. For both sound files: Are there bit errors? Why?
+
+	MobileComp1 doesn't have any bit errors. MobileComp2 has 6 bit errors and a BER ~0.1%. This is because at the start of MobileComp2 there is silence, and that's where the bit errors occur. During silence we cannot transmit data bits.
+
+2. Over the air measurements:
