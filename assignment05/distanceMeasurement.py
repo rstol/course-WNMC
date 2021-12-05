@@ -36,7 +36,7 @@ def compute_throughput_delay(timestamps, num_measuments, payload_size):
 def log(throughput, delays, payload_size):
   print("System saturation total throughput (b/s): ", throughput)
   print("System saturation average delay (s): ", np.average(delays))
-  print("Packet size (bit): ", payload_size / 8)
+  print("Packet size (byte): ", payload_size / 8)
 
 def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measuments):
   trans_message = 0
@@ -45,7 +45,7 @@ def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measu
   send_data(arduino, trans_message, recv_addr)
   timestamps.append(time.time())
 
-  while trans_message < repetitions:
+  while trans_message < num_measuments:
     try: 
       byte = arduino.read(1) #read one byte (blocks until data available or timeout reached) 
       if byte==b'\n': #if termination character reached
