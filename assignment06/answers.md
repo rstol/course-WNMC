@@ -1,3 +1,6 @@
+# Assignment 6
+David Bohner, ___ und Romeo Stoll, 19-917-749
+
 ## Step 1
 1. Does acoustic communication rely on electromagnetic waves?
 
@@ -51,6 +54,6 @@ __Graphs for MobileComp2__
 ## Step 3
 1. For both sound files: Are there bit errors? Why?
 
-	MobileComp1 doesn't have any bit errors. MobileComp2 has 6 bit errors and a BER ~0.1%. This is because at the start of MobileComp2 there is silence, and that's where the bit errors occur. During silence we cannot transmit data bits.
+	MobileComp1 doesn't have any bit errors. MobileComp2 has 6 bit errors and a BER of ~0.1%. This is because at the start of MobileComp2 is silence, and that's where the bit errors occur. During silence we cannot transmit data bits.
 
 2. Over the air measurements:
