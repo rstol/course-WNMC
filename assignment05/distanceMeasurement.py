@@ -24,25 +24,28 @@ def get_stats(values):
   med = np.median(price)
   return lower, med, upper, np.average(values), std
 
-def compute_throughput_delay(timestamps, num_measuments, payload_size):
+def compute_throughput_delay(timestamps, num_transmits, payload_size):
   total_throughput = 0.0 #system saturation throughput (bits per second)
   delays = np.zeros(len(timestamps)) #system saturation delay measurements (second)
   np_timestamps = np.asarray(timestamps)
   delays = np_timestamps[1:] - np_timestamps[:-1]
 
-  total_throughput = num_measuments*payload_size/((timestamps[-1]-timestamps[0]) * 8) # convert to bit 
+  total_throughput = num_transmits*payload_size/((timestamps[-1]-timestamps[0]) * 8) # convert to bit 
   return total_throughput, delays
 
-def log(throughput, delays, payload_size):
+def log(throughput, delays, payload_size, num_transmits, num_measuments):
+  print(f"Loss: {num_measuments - num_transmits}/{num_measuments}")
   print("System saturation total throughput (b/s): ", throughput)
   print("System saturation average delay (s): ", np.average(delays))
-  print("Packet size (byte): ", payload_size / 8)
+  print("Std deviation delay (s): ", np.std(delays))
+  print("Packet size (byte): ", payload_size / 8, "\n")
 
 def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measuments):
+  num_transmits = 0
   trans_message = 0
   recv_message = ''
 
-  send_data(arduino, trans_message, recv_addr)
+  send_data(arduino, padded(str(trans_message), payload_size), recv_addr)
   timestamps.append(time.time())
 
   while trans_message < num_measuments:
@@ -53,16 +56,36 @@ def transmission_control(arduino, recv_addr, payload_size, timestamps, num_measu
           timestamps.append(time.time())
           time.sleep(0.010)
           trans_message += 1
-          send_data(arduino, padded(str(trans_message), payload_size), recv_addr)
+          if trans_message < num_measuments:
+            send_data(arduino, padded(str(trans_message), payload_size), recv_addr)
+          else:
+            try: #check if the last message received an ACK
+              recv_message = ''
+              byte = arduino.read(1)
+              if byte == b'': return num_transmits #so, I feel like on timeout read just returns '' instead of throwing an exception. this seems to work. leaving try/except in regardless.
+              while byte != b'\n':
+                recv_message = recv_message + byte.decode()
+                byte = arduino.read(1)
+              if recv_message == 'm[R,A]':
+                num_transmits += 1
+                return num_transmits
+              else:
+                return num_transmits
+            except serial.SerialException:
+              return num_transmits #nothing to read, i.e. no ACK
           recv_message = '' #reset message
           if trans_message == num_measuments: # num of desired measurements reached 
-            break
+            return num_transmits
+        elif recv_message=='m[R,A]':
+          num_transmits += 1
+          recv_message = ''
         else:
           recv_message = '' #reset message
       else:
         recv_message = recv_message + byte.decode() #concatenate the message 
     except serial.SerialException: 
       continue #on timeout try to read again
+  return num_transmits
 
 ttyACMindex = '/dev/ttyACM' + input("Enter serial port index of device (0, 1): ")
 arduino = serial.Serial(port=ttyACMindex, baudrate=115200, timeout=1) #opens a serial port (resets the device!) 
@@ -76,13 +99,14 @@ time.sleep(1) #wait for settings to be applied
 
 recv_addr = input('Enter desired receive address: ')
 num_measuments = int(input('Enter desired number of measurements for each packet size: '))
+print()
 
 payload_sizes = [1, 10, 50, 100, 150, 200] # (Byte)
 for p_size in payload_sizes:
   timestamps = []
-  transmission_control(arduino, recv_addr, p_size, timestamps, num_measuments)
-  throughput, delays = compute_throughput_delay(timestamps, num_measuments, p_size)
-  log(throughput, delays, p_size)
+  num_transmits = transmission_control(arduino, recv_addr, p_size, timestamps, num_measuments)
+  throughput, delays = compute_throughput_delay(timestamps, num_transmits, p_size)
+  log(throughput, delays, p_size, num_transmits, num_measuments)
 
 # fig, ax = plt.subplots()
 # for col in range(y.shape[1]):

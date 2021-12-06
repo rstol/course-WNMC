@@ -1,0 +1,270 @@
+0.0cm
+	Loss: 0/10
+	System saturation total throughput (b/s):  0.5979039696121439
+	System saturation average delay (s):  0.20906367301940917
+	Std deviation delay (s):  0.005056212245730383
+	Packet size (byte):  0.125 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  4.580819635119711
+	System saturation average delay (s):  0.2728769302368164
+	Std deviation delay (s):  0.024277564308416027
+	Packet size (byte):  1.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  9.321028843262113
+	System saturation average delay (s):  0.6705268383026123
+	Std deviation delay (s):  0.15516343703980512
+	Packet size (byte):  6.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.048060152425812
+	System saturation average delay (s):  1.037511420249939
+	Std deviation delay (s):  0.27726232030760917
+	Packet size (byte):  12.5 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  13.34221647204687
+	System saturation average delay (s):  1.4053137302398682
+	Std deviation delay (s):  0.4014143675443184
+	Packet size (byte):  18.75 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  14.086130991953244
+	System saturation average delay (s):  1.774795365333557
+	Std deviation delay (s):  0.5218438029435868
+	Packet size (byte):  25.0 
+
+
+10cm +- 1cm:
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  0.6012267462235261
+	System saturation average delay (s):  0.2079082489013672
+	Std deviation delay (s):  0.007167171849606219
+	Packet size (byte):  0.125 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  4.467964312053247
+	System saturation average delay (s):  0.2797694683074951
+	Std deviation delay (s):  0.006697450065480176
+	Packet size (byte):  1.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  8.611342226744672
+	System saturation average delay (s):  0.7257869720458985
+	Std deviation delay (s):  0.004724445623251828
+	Packet size (byte):  6.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  11.034727078833996
+	System saturation average delay (s):  1.1327874183654785
+	Std deviation delay (s):  0.0064686099569274645
+	Packet size (byte):  12.5 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.12538326423837
+	System saturation average delay (s):  1.5463428735733031
+	Std deviation delay (s):  0.0064754612425079044
+	Packet size (byte):  18.75 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.771322052455186
+	System saturation average delay (s):  1.957510733604431
+	Std deviation delay (s):  0.009665083925773955
+	Packet size (byte):  25.0
+
+
+20cm +- 1cm:
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  0.5992664161950798
+	System saturation average delay (s):  0.2085883617401123
+	Std deviation delay (s):  0.007863412948052637
+	Packet size (byte):  0.125 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  4.473085282862786
+	System saturation average delay (s):  0.2794491767883301
+	Std deviation delay (s):  0.005760387881361623
+	Packet size (byte):  1.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  8.64509197183512
+	System saturation average delay (s):  0.7229535579681396
+	Std deviation delay (s):  0.005407954556452877
+	Packet size (byte):  6.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  11.063886809394706
+	System saturation average delay (s):  1.129801869392395
+	Std deviation delay (s):  0.0050228060750007976
+	Packet size (byte):  12.5 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.157673350986698
+	System saturation average delay (s):  1.5422358751296996
+	Std deviation delay (s):  0.006807190223912842
+	Packet size (byte):  18.75 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.823590428480987
+	System saturation average delay (s):  1.9495320081710816
+	Std deviation delay (s):  0.009140185302113068
+	Packet size (byte):  25.0 
+
+
+30cm +- 1cm:
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  0.6056718895269851
+	System saturation average delay (s):  0.2063823699951172
+	Std deviation delay (s):  0.006160141091284364
+	Packet size (byte):  0.125 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  4.460728314157492
+	System saturation average delay (s):  0.28022329807281493
+	Std deviation delay (s):  0.00415906329673217
+	Packet size (byte):  1.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  8.660343815755203
+	System saturation average delay (s):  0.7216803550720214
+	Std deviation delay (s):  0.0066644477109076405
+	Packet size (byte):  6.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  11.02270946670583
+	System saturation average delay (s):  1.1340224504470826
+	Std deviation delay (s):  0.007621116302586549
+	Packet size (byte):  12.5 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.171714105993797
+	System saturation average delay (s):  1.5404568195343018
+	Std deviation delay (s):  0.009090060477267443
+	Packet size (byte):  18.75 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  12.815108437168723
+	System saturation average delay (s):  1.950822353363037
+	Std deviation delay (s):  0.009690437829196614
+	Packet size (byte):  25.0 
+
+
+35cm +- 1cm:
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  0.4302186312317483
+	System saturation average delay (s):  0.29054994583129884
+	Std deviation delay (s):  0.1358510992659451
+	Packet size (byte):  0.125 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  4.009574866739574
+	System saturation average delay (s):  0.3117537498474121
+	Std deviation delay (s):  0.08752652050709764
+	Packet size (byte):  1.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  6.597060112609851
+	System saturation average delay (s):  0.9473917007446289
+	Std deviation delay (s):  0.33532801758928105
+	Packet size (byte):  6.25 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  9.132866318411338
+	System saturation average delay (s):  1.368683123588562
+	Std deviation delay (s):  0.46361685011370324
+	Packet size (byte):  12.5 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  8.071967654814994
+	System saturation average delay (s):  2.322853708267212
+	Std deviation delay (s):  1.0418851844968537
+	Packet size (byte):  18.75 
+
+	Loss: 0/10
+	System saturation total throughput (b/s):  10.64835202978016
+	System saturation average delay (s):  2.3477811336517336
+	Std deviation delay (s):  0.7808860050003757
+	Packet size (byte):  25.0 
+
+
+40cm +- 1cm:
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  1.5361405611038208
+	Std deviation delay (s):  0.10305779607409324
+	Packet size (byte):  0.125 
+
+	Loss: 3/10
+	System saturation total throughput (b/s):  0.6429664541861594
+	System saturation average delay (s):  1.3608797073364258
+	Std deviation delay (s):  0.6405870273215845
+	Packet size (byte):  1.25 
+
+	Loss: 6/10
+	System saturation total throughput (b/s):  0.6752684675405713
+	System saturation average delay (s):  3.702231216430664
+	Std deviation delay (s):  1.2927830704385672
+	Packet size (byte):  6.25 
+
+	Loss: 7/10
+	System saturation total throughput (b/s):  0.6341119981432821
+	System saturation average delay (s):  5.9137818098068236
+	Std deviation delay (s):  2.132143037120572
+	Packet size (byte):  12.5 
+
+	Loss: 6/10
+	System saturation total throughput (b/s):  0.8243956872662185
+	System saturation average delay (s):  9.097573065757752
+	Std deviation delay (s):  1.0629327350057212
+	Packet size (byte):  18.75 
+
+	Loss: 8/10
+	System saturation total throughput (b/s):  0.4705621500186829
+	System saturation average delay (s):  10.625588989257812
+	Std deviation delay (s):  2.8388620807884486
+	Packet size (byte):  25.0 
+
+
+45cm +- 1cm:
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  1.5617485761642456
+	Std deviation delay (s):  0.10502546295588795
+	Packet size (byte):  0.125 
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  2.0248908519744875
+	Std deviation delay (s):  0.09005982852037238
+	Packet size (byte):  1.25 
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  4.69295551776886
+	Std deviation delay (s):  0.07672325061665784
+	Packet size (byte):  6.25 
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  7.140866041183472
+	Std deviation delay (s):  0.08575260399678344
+	Packet size (byte):  12.5 
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  9.624460792541504
+	Std deviation delay (s):  0.08076200236720961
+	Packet size (byte):  18.75 
+
+	Loss: 10/10
+	System saturation total throughput (b/s):  0.0
+	System saturation average delay (s):  12.049950289726258
+	Std deviation delay (s):  0.0980910974595054
+	Packet size (byte):  25.0 
