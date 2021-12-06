@@ -27,6 +27,8 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+\usepackage{verbatim}
+
 \lstdefinestyle{codestyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -84,21 +86,30 @@
 \item[{[1]}] https://www.britannica.com/science/color/The-visible-spectrum
 \end{itemize}
 
-\listedsection{Step 3}
-
 \listedsection{Step 4}
-\listedsubsection{Screenshots}
+\listedsubsection{Screenshot}
 \includegraphics[width=\linewidth]{chatApp communication.png} 
 \listedsection{Step 5}
-\listedsubsection{Throughput, Delay Plots}
+\listedsubsection{Throughput, Delay Plot}
+\includegraphics[width=\linewidth]{Figure_1.png}
 \listedsubsection{Interpretation}
+We begin with some clarifications: We decided to include the 10ms artificial sleep delay between \texttt{m[D]} reception and the following send in the packet delay. Less controversial is that we also considered this 'artifical' delay in our throughput analysis. We also did not include packets that were received at the destination, but for which the \texttt{ACK} was not received at the source, into the total data volume transmitted for our throughput analysis, though we did consider their (timeout) delay in the average package delay.\\
+The measurements were conducted in a home-office environment with one central source of lighting in the ceiling directly overhead, hopefully giving the collected data relevancy for 'normal' home use with ambient light as a source of interference.\\\\
 
+From our data, we (generally) observe a continuous growth in throughput \textit{and} delay as package size grew, as well as a continuous decrease in throughput and increase in delay as the separation distance was increased.\\
+
+Throughput being proportional at some degree with packet size can be explained by the reduced percentile portion that communication overheads comprise, though starting at a distance of 35cm this effect began to diminish as the high bit failure rate begins to demand numerous re-transmissions of larger packages rather than few re-transmissions of smaller ones. This is very clearly obvious at 40cm, as after the initial increase in throughput by increasing package size from 1 to 10 bit, further increases to size cause the throughput to be reduced again (in our case, due to the very few (45\%) successfully transmitted packages, the rest running out of re-transmissions).\\
+
+Packet delay is trivially proportional with packet size due to the increased data transmitted per packet, but also due to the higher expected number of re-transmissions needed, as explained above. It is also for the latter reason that delay increases with separation distance.
 \newpage
 \listedsection{Appendix}
 \listedsubsection{Step 4: Chat App Source Code}
 \lstinputlisting[language=Python]{chatApp.py}
 \newpage
 
-\listedsubsection{Step 5: Script}
+\listedsubsection{Step 5: Data Logs}
+\verbatiminput{distance data.txt}
+\newpage
+\listedsubsection{Step 5: Source Code}
 \lstinputlisting[language=Python]{distanceMeasurement.py}
 \end{document}

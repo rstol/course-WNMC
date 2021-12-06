@@ -194,10 +194,10 @@
 
 40cm +- 1cm:
 
-	Loss: 10/10
-	System saturation total throughput (b/s):  0.0
-	System saturation average delay (s):  1.5361405611038208
-	Std deviation delay (s):  0.10305779607409324
+	Loss: 3/10
+	System saturation total throughput (b/s):  0.051255710861056
+	System saturation average delay (s):  1.34817195014697
+	Std deviation delay (s):  0.667517569145696
 	Packet size (byte):  0.125 
 
 	Loss: 3/10
