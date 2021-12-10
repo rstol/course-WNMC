@@ -2,7 +2,7 @@
 <JE802>
 	<JE802Control showGui="false" EmulationDuration_ms="60100"
 		      resume="false" resumeFile="results\hibernation.zip">
-		<JE802StatEval seed="11" EvalThrpPerAC="false"
+		<JE802StatEval seed="19917749" EvalThrpPerAC="false"
 			EvalDelayPerAC="false" EvalOfferPerAC="false" EvaluationStarttime_ms="2000"
 			EvaluationInterval_ms="1000" Path2Results="Results/a07_algo/"
 			EvalTotalOffer="true" EvalTotalThrp="true" EvalTotalDelay="false"
