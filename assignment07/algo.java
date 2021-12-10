@@ -1,7 +1,7 @@
 package layer2_802Algorithms;
 
 import plot.JEMultiPlotter;
-
+import statistics.JERandomVar;
 import layer1_802Phy.JE802PhyMode;
 import layer2_80211Mac.JE802_11BackoffEntity;
 import layer2_80211Mac.JE802_11Mac;
@@ -14,6 +14,10 @@ public class algo extends JE802_11MacAlgorithm {
 	private double theSamplingTime_sec;
 	private boolean flag_undefined = false;
 	
+	private double AQP; // Active Queue Param
+	private JERandomVar randomVar; // random variable with value in [0,1]
+	private double alpha1, alpha2; // random values in [0,1], used for exponential weighted moving average
+	private int CWmax = 1024; // maximal contention window
 	// PID controller params
 	private double iTerm = 0; // integral state
 	private double prevError = 0; // Last position error
@@ -25,6 +29,12 @@ public class algo extends JE802_11MacAlgorithm {
 	public algo(String name, JE802_11Mac mac) {
 		super(name, mac);
 		this.theBackoffEntityAC01 = this.mac.getBackoffEntity(1);
+		this.randomVar = new JERandomVar(this.theUniqueRandomGenerator, "Uniform", 0.0, 1.0);
+		this.alpha1 = this.randomVar.nextvalue();
+		this.alpha2 = this.randomVar.nextvalue();
+		this.AQP = 1.0 * (theBackoffEntityAC01.getQueueSize() - theBackoffEntityAC01.getCurrentQueueSize()) / theBackoffEntityAC01.getQueueSize();
+		this.CWmax = theBackoffEntityAC01.getDot11EDCACWmax();
+
 		message("I am station " + this.dot11MACAddress.toString() + ". My algorithm is called '" + this.algorithmName
 				+ "'.", 10);
 	}
@@ -34,11 +44,21 @@ public class algo extends JE802_11MacAlgorithm {
 		this.theSamplingTime_sec =  this.mac.getMlme().getTheIterationPeriod().getTimeS(); // this sampling time can only be read after the MLME was constructed.
 		
 		// observe outcome:
-		Integer currentQueueSize = this.theBackoffEntityAC01.getCurrentQueueSize();		
+		int TQS = theBackoffEntityAC01.getQueueSize();
+		int currentQueueSize = this.theBackoffEntityAC01.getCurrentQueueSize();		
 		Integer AIFSN = theBackoffEntityAC01.getDot11EDCAAIFSN();
 		Integer CWmin = theBackoffEntityAC01.getDot11EDCACWmin();
 		String phyMode = this.mac.getPhy().getCurrentPhyMode().toString();
 
+		double AQS = TQS - currentQueueSize; // available queue size
+		// exponential weighted moving average method
+		// For every transmission, AQP is estimated at the transmit-
+		// ting node. The estimated current buffer availability indicates
+		// whether queue reaches its full capacity soon or it has sufficient
+		// room for more packets. The value of AQP is reaching 1, meaning that the queue becomes full
+		AQP = alpha1 * (AQS/TQS) + alpha2 * AQP;
+		int CW = (int) Math.round(CWmax * AQP);
+		
 		message("with the following parameters ...", 10);
 		message("    AIFSN[AC01] = " + AIFSN.toString(), 10);
 		message("    CWmin[AC01] = " + CWmin.toString(), 10);
@@ -62,9 +82,7 @@ public class algo extends JE802_11MacAlgorithm {
 
 		// act:
 		theBackoffEntityAC01.setDot11EDCAAIFSN(AIFSN);
-		theBackoffEntityAC01.setDot11EDCACWmin(CWmin);
-
-
+		theBackoffEntityAC01.setDot11EDCACWmin(CW);
 	}
 	
 	@Override
