@@ -174,7 +174,7 @@ public class EMACW extends JE802_11MacAlgorithm {
 	}
 
 	private void timerTic() {
-		if (currentTimerID != -1 || currentTimer > 0) {
+		if (currentTimerID != -1 && currentTimer > 0) {
 			currentTimer -= 1; // decrease timer each interval
 		}
 	}
