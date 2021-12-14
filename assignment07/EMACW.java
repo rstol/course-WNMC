@@ -12,7 +12,7 @@ public class EMACW extends JE802_11MacAlgorithm {
 	private JE802_11BackoffEntity theBackoffEntity; // entity of AC: 1
 	
 	private double theSamplingTime_sec;
-	private boolean cooperative_mode = true; // false = aggressiv TODO: use this
+	private boolean cooperativeMode = true; // false = aggressiv
 	
 	private double ACP = 0.0; // Active Collisions Param: start cooperative by default
 	private int prevCollisions = 0;
@@ -21,6 +21,10 @@ public class EMACW extends JE802_11MacAlgorithm {
 	private double alpha; // random values in [0,1], used for exponential weighted moving average
 	private int CWmax = 1023; // maximal contention window
 	private int CWmin = 31; // minimal contention window
+	private double T1 = 0.8, T2 = 0.5; // thresholds for contention
+	private boolean checkingContention = false; 
+	private JERandomVar randomDuration; // uniform random variable in interval [3,10]
+	private int CONTENTION_TIMER_ID = 1, AGGRESSIVE_TIMER_ID = 2; 
 	// PID controller params
 	private double iTerm = 0; // integral state
 	private double prevError = 0; // Last position error
@@ -28,12 +32,15 @@ public class EMACW extends JE802_11MacAlgorithm {
 	private double iGain = 0.01, // integral gain
 			pGain = 1.0, // proportional gain
 			dGain = 10.0; // derivative gain
-
+	// timer params
+	private int currentTimer = 0;
+	private int currentTimerID = -1;
 	
 	public EMACW(String name, JE802_11Mac mac) {
 		super(name, mac);
 		this.theBackoffEntity = this.mac.getBackoffEntity(1);
 		this.randomVar = new JERandomVar(this.theUniqueRandomGenerator, "Uniform", 0.0, 1.0);
+		this.randomDuration = new JERandomVar(this.theUniqueRandomGenerator, "Uniform", 3.0, 10.0); //TODO: maybe change this interval
 		this.alpha = this.randomVar.nextvalue();
 		this.CWmax = theBackoffEntity.getDot11EDCACWmax();
 		this.CWmin = theBackoffEntity.getDot11EDCACWmin();
@@ -45,6 +52,7 @@ public class EMACW extends JE802_11MacAlgorithm {
 	@Override
 	public void compute() {
 		this.theSamplingTime_sec =  this.mac.getMlme().getTheIterationPeriod().getTimeS(); // this sampling time can only be read after the MLME was constructed.
+		timerTic();
 		
 		// observe outcome:
 		int totalTransmAttempts = (int) this.theBackoffEntity.getTheTxCnt();
@@ -63,12 +71,17 @@ public class EMACW extends JE802_11MacAlgorithm {
 			ACP = Math.max(0.0, alpha * (1.0 * currCollisions/currTransmAttempts) + (1 - alpha) * ACP); 
 		int CW = Math.max(CWmin, (int) Math.round(CWmax * ACP));
 		
-		//TODO: after aggressive mode: Set alpha to higher value than before to ensure that AQP is accurate again in short time
 
-		//TODO: if ACP is above some threshold i.e. T1=0.8 for some number of iterations (=high contention), then choose random iteration count in some small
-		// 	  interval during which we artificially lower the CW (aggressiv). We continue to measure ACP as before and if during the 
-		//	  aggressive mode the ACP falls below some threshold i.e. T2=0.5 we stop the aggressive mode prematurely. 
-
+		// if ACP stays above some threshold i.e. T1=0.8 for some number of iterations (=high contention), then choose random iteration count in some small
+		// interval during which we artificially lower the CW (aggressiv). We continue to measure ACP as before and if during the 
+		// aggressive mode the ACP falls below some threshold i.e. T2=0.5 we stop the aggressive mode prematurely. 
+		if(hasContention(ACP)) {
+			setAggressiveMode();
+		}
+		if(!cooperativeMode) {
+			CW = CWmin; // aggressive mode: set CW to small value
+		}		
+		
 		message("with the following parameters ...");
 		message("    AIFSN[AC01] = " + AIFSN.toString());
 		message("	 current CWmin = " + CW + " ,CWmax = " + CWmax);
@@ -99,7 +112,7 @@ public class EMACW extends JE802_11MacAlgorithm {
 		prevCollisions += currCollisions;
 		prevTransmAttempts += currTransmAttempts;
 	}
-	
+
 	@Override
 	public void plot() {
 		// TODO
@@ -109,7 +122,63 @@ public class EMACW extends JE802_11MacAlgorithm {
 		// }
 		// 	plotter.plot(((Double) theUniqueEventScheduler.now().getTimeMs()).doubleValue() / 1000.0, theBackoffEntity.getCurrentQueueSize(), 0);
 	}
+	
+	private void setAggressiveMode() {
+		if(cooperativeMode) {
+			int duration = (int) Math.round(this.randomDuration.nextvalue());
+			setTimer(AGGRESSIVE_TIMER_ID, duration);
+			cooperativeMode = false;
+			
+		} else {
+			if(passTimer())
+				cooperativeMode = true;
+		}
+		
+	}
 
+	private boolean hasContention(double ACP) {
+		if(cooperativeMode && ACP > T1) { 
+			// only set contention timer in cooperative mode
+			if(!checkingContention) {
+				setTimer(CONTENTION_TIMER_ID, 5); //TODO: maybe change duration value 
+				checkingContention = true;
+				return false;
+			}
+			if(checkingContention && passTimer()) {
+				checkingContention = false;
+				return true;
+			}
+		} 
+		if (!cooperativeMode) {
+			if (ACP <= T2)
+				cooperativeMode = true; //stop the aggressive mode prematurely
+			else
+				return true; //still has contention, continue aggressive mode.
+		} 
+		return false;
+	}
+
+	private boolean passTimer() {
+		if (currentTimerID != -1 && currentTimer == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	// sets timer with timerID to duration
+	private void setTimer(int timerID, int duration) {
+		if(timerID >= 0 && duration >= 0) {
+			currentTimer = duration;
+			currentTimerID = timerID;
+		}
+	}
+
+	private void timerTic() {
+		if (currentTimerID != -1 || currentTimer > 0) {
+			currentTimer -= 1; // decrease timer each interval
+		}
+	}
+	
 	private double PID_controller(double error) {
 		// Compute integral
 		iTerm += iGain * error;
