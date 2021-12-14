@@ -55,10 +55,10 @@ public class EMACW extends JE802_11MacAlgorithm {
 		int currTransmAttempts = totalTransmAttempts - prevTransmAttempts;
 
 		// exponential weighted moving average method
-		// For every transmission, AQP is estimated at the station. 
+		// For every transmission, ACP is estimated at the station. 
 		// The estimated current packet collisions indicates
 		// whether there is congestion in the system. 
-		// The value of AQP is reaching 1, meaning that almost all transmission attempts result in collisions
+		// The value of ACP is reaching 1, meaning that almost all transmission attempts result in collisions
 		if (currTransmAttempts > 0)  // don't divide by zero
 			ACP = Math.max(0.0, alpha * (1.0 * currCollisions/currTransmAttempts) + (1 - alpha) * ACP); 
 		int CW = Math.max(CWmin, (int) Math.round(CWmax * ACP));
@@ -98,11 +98,12 @@ public class EMACW extends JE802_11MacAlgorithm {
 	
 	@Override
 	public void plot() {
-		if (plotter == null) {
-			plotter = new JEMultiPlotter("PID Controller, Station " + this.dot11MACAddress.toString(), "current", "time [s]", "MAC Queue", this.theUniqueEventScheduler.getEmulationEnd().getTimeMs() / 1000.0, true);
-			plotter.display();
-		}
-			plotter.plot(((Double) theUniqueEventScheduler.now().getTimeMs()).doubleValue() / 1000.0, theBackoffEntity.getCurrentQueueSize(), 0);
+		// TODO
+		// if (plotter == null) {
+		// 	plotter = new JEMultiPlotter("PID Controller, Station " + this.dot11MACAddress.toString(), "current", "time [s]", "MAC Queue", this.theUniqueEventScheduler.getEmulationEnd().getTimeMs() / 1000.0, true);
+		// 	plotter.display();
+		// }
+		// 	plotter.plot(((Double) theUniqueEventScheduler.now().getTimeMs()).doubleValue() / 1000.0, theBackoffEntity.getCurrentQueueSize(), 0);
 	}
 
 	private double PID_controller(double error) {
