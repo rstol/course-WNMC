@@ -63,6 +63,8 @@ public class algo extends JE802_11MacAlgorithm {
 		AQP = alpha * (AQS/TQS) + (1 - alpha) * AQP;
 		int CW = Math.max(CWmin, (int) Math.round(CWmax * AQP));
 		
+		// after aggressive mode: Set alpha to higher value than before to ensure that AQP is accurate again in short time
+
 		message("with the following parameters ...", 10);
 		message("    AIFSN[AC01] = " + AIFSN.toString(), 10);
 		message("	 Phy mode    = " + phyMode, 10);
@@ -71,17 +73,6 @@ public class algo extends JE802_11MacAlgorithm {
 
 		double error = 0.0;
 		PID_controller(error);
-
-		// TODO: infer decision: (note, we just change the values arbitrarily
-		if (flag_undefined) { // we should increase AIFSN
-			AIFSN = AIFSN + 1;
-		} else { // we should decrease AIFSN
-			AIFSN = AIFSN - 1;
-		}
-		if (AIFSN >= 20)
-			flag_undefined = false;
-		if (AIFSN <= 2)
-			flag_undefined = true;
 
 		timerTic(); 
 		//TODO: change Hysteris and threshold levels S1 ect. depending on the mode
@@ -103,6 +94,13 @@ public class algo extends JE802_11MacAlgorithm {
 		// act:
 		theBackoffEntityAC01.setDot11EDCAAIFSN(AIFSN);
 		theBackoffEntityAC01.setDot11EDCACWmin(CW);
+
+		//set power to constant 0 dBm
+		if (this.mac.getPhy().getCurrentTransmitPower_dBm() != 0.0)
+			this.mac.getPhy().setCurrentTransmitPower_dBm(0.0);
+		//set phy mode to constant highest throughput
+		if (!this.mac.getPhy().getCurrentPhyMode().toString().equals("64QAM34"))
+			this.mac.getPhy().setCurrentPhyMode("64QAM34");
 	}
 	
 	@Override
@@ -135,7 +133,6 @@ public class algo extends JE802_11MacAlgorithm {
 			return true;
 		}
 		return false;
-		
 	}
 	
 	private void setSelectionTimer(int timerID) {
