@@ -65,6 +65,10 @@ public class EMACW extends JE802_11MacAlgorithm {
 		
 		//TODO: after aggressive mode: Set alpha to higher value than before to ensure that AQP is accurate again in short time
 
+		//TODO: if ACP is above some threshold i.e. T1=0.8 for some number of iterations (=high contention), then choose random iteration count in some small
+		// 	  interval during which we artificially lower the CW (aggressiv). We continue to measure ACP as before and if during the 
+		//	  aggressive mode the ACP falls below some threshold i.e. T2=0.5 we stop the aggressive mode prematurely. 
+
 		message("with the following parameters ...");
 		message("    AIFSN[AC01] = " + AIFSN.toString());
 		message("	 current CWmin = " + CW + " ,CWmax = " + CWmax);
