@@ -74,23 +74,6 @@ public class algo extends JE802_11MacAlgorithm {
 		double error = 0.0;
 		PID_controller(error);
 
-		timerTic(); 
-		//TODO: change Hysteris and threshold levels S1 ect. depending on the mode
-		double Hys = 0.05, S1 = 0.7, S2 = 0.45, S3 = 0.2;
- 		if (AQP + Hys >= S1) {
-			if (passSelectionTimer(1)) this.mac.getPhy().setCurrentPhyMode("BPSK12");
-			else setSelectionTimer(1);
-		} else if (AQP + Hys >= S2) {
-			if (passSelectionTimer(2)) this.mac.getPhy().setCurrentPhyMode("QPSK12");
-			else setSelectionTimer(2);
-		} else if (AQP + Hys >= S3) {
-			if (passSelectionTimer(3)) this.mac.getPhy().setCurrentPhyMode("16QAM12");
-			else setSelectionTimer(3);
-		} else { // AQP + Hys < S3
-			if (passSelectionTimer(4)) this.mac.getPhy().setCurrentPhyMode("64QAM23");
-			else setSelectionTimer(4);
-		}
-
 		// act:
 		theBackoffEntityAC01.setDot11EDCAAIFSN(AIFSN);
 		theBackoffEntityAC01.setDot11EDCACWmin(CW);
@@ -125,26 +108,5 @@ public class algo extends JE802_11MacAlgorithm {
 
 		prevError = error;
 		return out;
-	}
-	
-	// selection timer to avoid an unnecessary change of PHY mode, caused by any outliers
-	private boolean passSelectionTimer(int timerID) {
-		if ((currentTimerID == -1 || currentTimerID == timerID) && currentTimer == 0) {
-			return true;
-		}
-		return false;
-	}
-	
-	private void setSelectionTimer(int timerID) {
-		if(timerID != currentTimerID) {
-			currentTimer = 3; // set timer to three time intervals
-			currentTimerID = timerID; // update timer ID
-		}
-	}
-	
-	private void timerTic() {
-		if (currentTimerID != -1 || currentTimer > 0) {
-			currentTimer -= 1; // decrease timer each interval
-		}
 	}
 }
