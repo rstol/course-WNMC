@@ -18,10 +18,10 @@ public class EMACW extends JE802_11MacAlgorithm {
 	private int prevCollisions = 0;
 	private int prevTransmAttempts = 0;
 	private JERandomVar randomVar; // uniform random variable in interval [0,1]
-	private double alpha; // random values in [0,1], used for exponential weighted moving average
+	private double alpha; // random values in [0,0.5], used for exponential weighted moving average
 	private int CWmax = 1023; // maximal contention window
 	private int CWmin = 31; // minimal contention window
-	private double T1 = 0.8, T2 = 0.5; // thresholds for contention
+	private double T1 = 0.6, T2 = 0.2; // thresholds for contention
 	private boolean checkingContention = false; 
 	private JERandomVar randomDuration; // uniform random variable in interval [3,10]
 	private int CONTENTION_TIMER_ID = 1, AGGRESSIVE_TIMER_ID = 2; 
@@ -41,7 +41,8 @@ public class EMACW extends JE802_11MacAlgorithm {
 		this.theBackoffEntity = this.mac.getBackoffEntity(1);
 		this.randomVar = new JERandomVar(this.theUniqueRandomGenerator, "Uniform", 0.0, 1.0);
 		this.randomDuration = new JERandomVar(this.theUniqueRandomGenerator, "Uniform", 3.0, 10.0); //TODO: maybe change this interval
-		this.alpha = this.randomVar.nextvalue();
+		this.alpha = this.randomVar.nextvalue() / 2;
+		while (this.alpha == 0) this.alpha = this.randomVar.nextvalue() / 2;
 		this.CWmax = theBackoffEntity.getDot11EDCACWmax();
 		this.CWmin = theBackoffEntity.getDot11EDCACWmin();
 		
@@ -68,8 +69,8 @@ public class EMACW extends JE802_11MacAlgorithm {
 		// whether there is congestion in the system. 
 		// The value of ACP is reaching 1, meaning that almost all transmission attempts result in collisions
 		if (currTransmAttempts > 0)  // don't divide by zero
-			ACP = Math.max(0.0, alpha * (1.0 * currCollisions/currTransmAttempts) + (1 - alpha) * ACP); 
-		int CW = Math.max(CWmin, (int) Math.round(CWmax * ACP));
+			ACP = Math.max(0.0, this.alpha * (1.0 * currCollisions/currTransmAttempts) + (1 - this.alpha) * ACP); 
+		int CW = Math.max(CWmin, (int) Math.round(CWmax * Math.pow(ACP, 3)));
 		
 
 		// if ACP stays above some threshold i.e. T1=0.8 for some number of iterations (=high contention), then choose random iteration count in some small
@@ -84,8 +85,8 @@ public class EMACW extends JE802_11MacAlgorithm {
 		
 		message("with the following parameters ...");
 		message("    AIFSN[AC01] = " + AIFSN.toString());
-		message("	 current CWmin = " + CW + " ,CWmax = " + CWmax);
-		message("	 ACP = " + ACP + ", alpha = " + alpha);
+		message("	 current CWmin = " + CWmin + ", CWmax = " + CWmax + ", CW = " + CW);
+		message("	 ACP = " + ACP + ", alpha = " + this.alpha);
 		if (currTransmAttempts > 0) 
 			message("	ratio = " + 1.0 * currCollisions/currTransmAttempts);
 		message("... the algorithm performs like this:");
@@ -111,6 +112,18 @@ public class EMACW extends JE802_11MacAlgorithm {
 		// update variables
 		prevCollisions += currCollisions;
 		prevTransmAttempts += currTransmAttempts;
+
+		//TODO: change Hysteris and threshold levels S1 ect. depending on the mode
+		// double Hys = 0.05, S1 = 0.7, S2 = 0.45, S3 = 0.2;
+ 		// if (ACP + Hys >= S1) {
+		// 	this.mac.getPhy().setCurrentPhyMode("BPSK12");
+		// } else if (ACP + Hys >= S2) {
+		// 	this.mac.getPhy().setCurrentPhyMode("QPSK12");
+		// } else if (ACP + Hys >= S3) {
+		// 	this.mac.getPhy().setCurrentPhyMode("16QAM12");
+		// } else { // AQP + Hys < S3
+		// 	this.mac.getPhy().setCurrentPhyMode("64QAM23");
+		// }
 	}
 
 	@Override
