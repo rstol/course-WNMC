@@ -12,3 +12,6 @@ The serial com port (COMXX) may need to be modified.
 ## Notes
 - I couldn't run the script as I don't have the arduino connected. I hope the script works.
 - The app should terminate on "Ctrl+C"
+
+### Result
+![Chat App Communication](./chatApp%20communication.png)
